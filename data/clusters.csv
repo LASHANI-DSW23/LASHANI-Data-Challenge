@@ -1,0 +1,5 @@
+Cluster,Games Product,Music Product,Education Product,Call Center,Video Product,Use MyApp,Monthly Purchase Level,Device,Total Churn Labels
+0,Low Usage,Low Usage,Low Usage,Low Usage,Moderate Usage,Moderate Usage,High,High End,1297
+1,No Service,No Service,No Service,No Tendency,No Service,No Service,Low,Low End,113
+2,Low Usage,Low Usage,Low Usage,No Tendency,Low Usage,Low Usage,Moderate,Mid End,345
+3,Moderate Usage,Moderate Usage,Moderate Usage,Using,Moderate Usage,Moderate Usage,Moderate,Mid End,114

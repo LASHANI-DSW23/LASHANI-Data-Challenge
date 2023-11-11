@@ -32,6 +32,16 @@ def map_payment_method(method):
         return {'Credit': 0, 'Debit': 0, 'Digital Wallet': 1, 'Pulsa': 0}
     elif method == 'Pulsa':
         return {'Credit': 0, 'Debit': 0, 'Digital Wallet': 0, 'Pulsa': 1}
-    
-    
+
+def segmentationlabel(x):
+    if x == 0:
+        return "High-End, Moderate"
+    elif x == 1:
+        return "Low-End, No Service"
+    elif x == 2:
+        return "Mid-End, Low"
+    elif x == 3:
+        return "Mid-End, Moderate"
+    else:
+        return "Unknown"
 

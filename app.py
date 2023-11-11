@@ -3,6 +3,7 @@ import pandas as pd
 import tensorflow as tf
 import numpy as np
 import pickle
+import joblib
 from datetime import datetime
 from app_func import *
 from PIL import Image
@@ -44,36 +45,46 @@ with col2:
 # Generate Tabs
 listTabs = [
 "Dashboard",
-"Churn & CLTV Forecasting"
+"Customer Segmentation and Predictions"
 ]
 
 # Show tabs
 dashtab, mltab = st.tabs([s.center(55,"\u2001") for s in listTabs])
+####
 
 with dashtab:
-    pass
+    st.markdown('<iframe title="Dashboard_Lashani" width="100%" height="600" src="https://app.powerbi.com/view?r=eyJrIjoiZTNjNTgxNmYtYmZkZS00M2Q1LTk2YjUtNDRiZDRhN2U4MzU0IiwidCI6IjllYzZkNzdmLTQ0ZmQtNDc3MC05YTkzLTdkYjI2OTYzZWNlOSIsImMiOjEwfQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>', unsafe_allow_html = True)
 
 with mltab:
     # Write Header
-    st.write("### Input Customer Data")
+    st.write("### Customer Forecasting")
 
     # Caching
-    if "churnmodel" not in st.session_state:
+    if "model" not in st.session_state:
         with open('./model/churnmodel.pkl', 'rb') as model_file:
             churnmodel = pickle.load(model_file)
 
         with open('./model/cltvmodel.pkl', 'rb') as model_file:
             cltvmodel = pickle.load(model_file)
 
+        with open('./model/kmeans.pkl', 'rb') as model_file:
+            kmeansmodel = pickle.load(model_file)
+
+        scaler = joblib.load('./model/scaler_model.pkl')
+
         st.session_state.model = {
             "churn" : churnmodel,
-            "cltv" : cltvmodel
+            "cltv" : cltvmodel,
+            "kmeans" : kmeansmodel,
+            "scaler" : scaler
         }
 
     # Optimization
     else:
         churnmodel = st.session_state.model["churn"]
         cltvmodel = st.session_state.model["cltv"]
+        kmeans = st.session_state.model["kmeans"]
+        scaler = st.session_state.model["scaler"]
 
     # Create Columns for Input Sections
     col0, col1, col2, col3, col4 = st.columns(5)  # First row of columns
@@ -155,6 +166,9 @@ with mltab:
         'use_Pulsa': [mappayment["Pulsa"]]
     })
 
+    # Create a new DataFrame for Segmentation Model
+    dfcluster = df[["Games Product", "Music Product", "Education Product", "Call Center", "Video Product", "Use MyApp", "Monthly Purchase (Thou. IDR)", "is_High End", "is_Low End", "is_Mid End"]]
+
     # Map the 'Location' column to numerical values
     df['Location'] = df['Location'].map({'Jakarta': 1, 'Bandung': 0})
 
@@ -164,6 +178,16 @@ with mltab:
         # Predict the result with previously trained model
         churnresult = churnmodel.predict(df.values[0].reshape(1, -1))[0]
         cltvresult = cltvmodel.predict(df.values[0].reshape(1, -1))[0]
-        
+
+        scaled_data = scaler.transform(dfcluster.values[0].reshape(1, -1))
+        segmentationresult = kmeans.predict(scaled_data)[0]
+
         # Display the prediction results
-        st.success(f"Predicted Churn: {'Positive' if churnresult == 1 else 'Negative'}, Predicted Customer Lifetime Value: {round(cltvresult, 1)} (Thousand IDR)")
+        st.success(f"Cluster Type: Cluster {segmentationresult} ({segmentationlabel(int(segmentationresult))}), Predicted Churn: {'Positive' if churnresult == 1 else 'Negative'}, Predicted Customer Lifetime Value: {round(cltvresult, 1)} (Thousand IDR)")
+
+    # Write Header
+    st.write("### Customer Segmentation")
+
+    with st.expander("Customer Segmentation Clusters"):
+        segmentdf = pd.read_csv("./data/clusters.csv").set_index("Cluster")
+        st.dataframe(segmentdf)
