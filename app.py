@@ -115,7 +115,7 @@ with mltab:
             ('Credit', 'Debit', 'Digital Wallet', 'Pulsa'))  # User selects payment method
 
     with col4:
-        st.write("<p style='text-align: left;'>Monthly Purchase</h1>", unsafe_allow_html=True)
+        st.write("<p style='text-align: left;'>Monthly Purchase (Thousand IDR)</h1>", unsafe_allow_html=True)
         monthly = st.number_input(" ", step=1)  # User inputs monthly purchase amount
 
     # User Inputs for the Second Row of Columns
