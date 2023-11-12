@@ -2,6 +2,4 @@ streamlit
 pandas
 tensorflow
 numpy
-time
 plotly
-datetime
