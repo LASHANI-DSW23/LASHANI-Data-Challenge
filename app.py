@@ -88,7 +88,7 @@ with mltab:
 
     # Create Columns for Input Sections
     col0, col1, col2, col3, col4 = st.columns(5)  # First row of columns
-    col5, col6, col7, col8, col9, col10 = st.columns(6)  # Second row of columns
+    col5, col6, col7, col8, col9, col10, col11 = st.columns(7)  # Second row of columns
 
     # User Inputs for the First Row of Columns
     with col0:
@@ -135,6 +135,9 @@ with mltab:
 
     with col10:
         myapp = st.checkbox("MyApp")  # User checks the MyApp option
+
+    with col11:
+        noservice = st.checkbox("No Service")
         stspace(2)  # Add vertical space
 
         # Button to Trigger Prediction
@@ -146,34 +149,41 @@ with mltab:
     mapdevice = map_end_category(device)
     mappayment = map_payment_method(payment)
 
-    # Create a new DataFrame with user inputs
-    df = pd.DataFrame({
-        'Tenure Months': [months],
-        'Location': [location],
-        'Games Product': [int(games)],
-        'Music Product': [int(music)],
-        'Education Product': [int(education)],
-        'Call Center': [int(callcenter)],
-        'Video Product': [int(video)],
-        'Use MyApp': [int(myapp)],
-        'Monthly Purchase (Thou. IDR)': [monthly],
-        'is_High End': [mapdevice["high"]],
-        'is_Low End': [mapdevice["low"]],
-        'is_Mid End': [mapdevice["mid"]],
-        'use_Credit': [mappayment["Credit"]],
-        'use_Debit': [mappayment["Debit"]],
-        'use_Digital Wallet': [mappayment["Digital Wallet"]],
-        'use_Pulsa': [mappayment["Pulsa"]]
-    })
-
-    # Create a new DataFrame for Segmentation Model
-    dfcluster = df[["Games Product", "Music Product", "Education Product", "Call Center", "Video Product", "Use MyApp", "Monthly Purchase (Thou. IDR)", "is_High End", "is_Low End", "is_Mid End"]]
-
-    # Map the 'Location' column to numerical values
-    df['Location'] = df['Location'].map({'Jakarta': 1, 'Bandung': 0})
-
+    if noservice:
+        games = 2
+        music = 2
+        education = 2
+        video = 2
+        myapp = 2
+    
     # Predict Input when the "Predict!" button is clicked
     if isPredict:
+
+        # Create a new DataFrame with user inputs
+        df = pd.DataFrame({
+            'Tenure Months': [months],
+            'Location': [location],
+            'Games Product': [int(games)],
+            'Music Product': [int(music)],
+            'Education Product': [int(education)],
+            'Call Center': [int(callcenter)],
+            'Video Product': [int(video)],
+            'Use MyApp': [int(myapp)],
+            'Monthly Purchase (Thou. IDR)': [monthly],
+            'is_High End': [mapdevice["high"]],
+            'is_Low End': [mapdevice["low"]],
+            'is_Mid End': [mapdevice["mid"]],
+            'use_Credit': [mappayment["Credit"]],
+            'use_Debit': [mappayment["Debit"]],
+            'use_Digital Wallet': [mappayment["Digital Wallet"]],
+            'use_Pulsa': [mappayment["Pulsa"]]
+        })
+
+        # Create a new DataFrame for Segmentation Model
+        dfcluster = df[["Games Product", "Music Product", "Education Product", "Call Center", "Video Product", "Use MyApp", "Monthly Purchase (Thou. IDR)", "is_High End", "is_Low End", "is_Mid End"]]
+
+        # Map the 'Location' column to numerical values
+        df['Location'] = df['Location'].map({'Jakarta': 1, 'Bandung': 0})
 
         # Predict the result with previously trained model
         churnresult = churnmodel.predict(df.values[0].reshape(1, -1))[0]
