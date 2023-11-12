@@ -45,7 +45,7 @@ with col2:
 # Generate Tabs
 listTabs = [
 "Dashboard",
-"Customer Segmentation and Predictions"
+"Customer Insights and Predictions"
 ]
 
 # Show tabs
@@ -186,8 +186,18 @@ with mltab:
         st.success(f"Cluster Type: Cluster {segmentationresult} ({segmentationlabel(int(segmentationresult))}), Predicted Churn: {'Positive' if churnresult == 1 else 'Negative'}, Predicted Customer Lifetime Value: {round(cltvresult, 1)} (Thousand IDR)")
 
     # Write Header
-    st.write("### Customer Segmentation")
+    st.write("### Customer Insights")
 
     with st.expander("Customer Segmentation Clusters"):
         segmentdf = pd.read_csv("./data/clusters.csv").set_index("Cluster")
         st.dataframe(segmentdf)
+
+    with st.expander("Customer Journey"):
+        if "custjourneyfig" not in st.session_state:
+            custjourneyfig = customerjourney()
+            st.session_state.custjourneyfig = custjourneyfig
+        
+        else:
+            custjourneyfig = st.session_state.custjourneyfig
+
+        st.plotly_chart(custjourneyfig, use_container_width=True)
