@@ -195,6 +195,14 @@ with mltab:
 
         # Display the prediction results
         st.success(f"Cluster Type: Cluster {segmentationresult} ({segmentationlabel(int(segmentationresult))}), Predicted Churn: {'Positive' if churnresult == 1 else 'Negative'}, Predicted Customer Lifetime Value: {round(cltvresult, 1)} (Thousand IDR)")
+        st.write(f"Recommendation for Cluster {segmentationresult} ({segmentationlabel(int(segmentationresult))}):")
+
+        # List of recommendations for Cluster 0
+        recommendations_cluster = recommendation(segmentationresult)
+
+        # Display recommendations
+        for recommendation in recommendations_cluster:
+            st.write(recommendation)
 
     # Write Header
     st.write("### Customer Insights")
