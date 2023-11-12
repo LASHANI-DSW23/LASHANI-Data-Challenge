@@ -58,6 +58,7 @@ with dashtab:
 with mltab:
     # Write Header
     st.write("### Customer Forecasting")
+    st.write("Enter the values for the features asked to predict the customer's cluster segmentation, churn label, and lifetime value.")
 
     # Caching
     if "model" not in st.session_state:
@@ -201,6 +202,18 @@ with mltab:
     with st.expander("Customer Segmentation Clusters"):
         segmentdf = pd.read_csv("./data/clusters.csv").set_index("Cluster")
         st.dataframe(segmentdf)
+        st.write("""
+        Above is the result of our customer segmentation using clusters. The segmentation result reveals four distinct customer clusters (labelled 0 to 3), each characterized by specific behavior patterns; each of them is:""")
+
+        clusters_description = [
+            "Cluster 0 **(High End, High Purchase, Moderate Product Usage)**",
+            "Cluster 1 **(Low End, Low Purchase, No Service)**",
+            "Cluster 2 **(Mid End, Moderate Purchase, Low Product Usage)**",
+            "Cluster 3 **(Mid End, Moderate Purchase, Moderate Product Usage)**"
+        ]
+
+        for num, description in enumerate(clusters_description):
+            st.write(f"{num + 1}. {description}")
 
     with st.expander("Customer Journey"):
         if "custjourneyfig" not in st.session_state:
@@ -211,3 +224,5 @@ with mltab:
             custjourneyfig = st.session_state.custjourneyfig
 
         st.plotly_chart(custjourneyfig, use_container_width=True)
+        st.write("From the Sankey diagram above, we can see the growth of our Customer from each month. Each node or bar, represents the months that have passed, as for the height of that bar represents the amount of customers we've recruited for the months that have passed. In the end we can see that the bar is divided into two: Month_72_Churn and Month_72_Active to differentiate the amount of active customers and churn customers in the current quarter.")
+        st.write("Our recommendation for the next Data Gathering, is that we record the customer's ID to track their journey with the company for each month. As for the stages: we propose Awareness, Research, Consideration, Purchase, and Support. So for each month, we will be able to see on what stage is the customer on.")
