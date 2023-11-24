@@ -6,3 +6,5 @@ joblib
 Pillow
 scikit-learn
 plotly
+streamlit-option-menu
+seaborn
