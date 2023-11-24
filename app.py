@@ -7,6 +7,7 @@ import joblib
 from datetime import datetime
 from app_func import *
 from PIL import Image
+from streamlit_option_menu import option_menu
 
 # Set Layout Config
 st.set_page_config(page_title="DSW - Lashani", page_icon=":chart_with_upwards_trend:",layout="wide")
@@ -49,13 +50,14 @@ listTabs = [
 ]
 
 # Show tabs
-dashtab, mltab = st.tabs([s.center(55,"\u2001") for s in listTabs])
-####
+selected = option_menu(None, ["Home", "Customer Insights and Predictions"], 
+    icons=['house', 'star'], 
+    menu_icon="cast", default_index=0, orientation="horizontal")
 
-with dashtab:
-    st.markdown('<iframe title="Dashboard_Lashani" width="100%" height="600" src="https://app.powerbi.com/view?r=eyJrIjoiZTNjNTgxNmYtYmZkZS00M2Q1LTk2YjUtNDRiZDRhN2U4MzU0IiwidCI6IjllYzZkNzdmLTQ0ZmQtNDc3MC05YTkzLTdkYjI2OTYzZWNlOSIsImMiOjEwfQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>', unsafe_allow_html = True)
+if selected == "Home":
+    st.markdown('<iframe title="Report Section" width="100%" height="600" src="https://app.powerbi.com/view?r=eyJrIjoiODhjMWM5ZTgtOTI0ZS00M2JkLWI0NTAtM2U1Nzc4NjEzMTRkIiwidCI6IjllYzZkNzdmLTQ0ZmQtNDc3MC05YTkzLTdkYjI2OTYzZWNlOSIsImMiOjEwfQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>', unsafe_allow_html = True)
 
-with mltab:
+else:
     # Write Header
     st.write("### Customer Forecasting")
     st.write("Enter the values for the features asked to predict the customer's cluster segmentation, churn label, and lifetime value.")
