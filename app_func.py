@@ -36,13 +36,13 @@ def map_payment_method(method):
 
 def segmentationlabel(x):
     if x == 0:
-        return "High-End, Moderate"
+        return "High-End, High Purchase, Moderate Product Usage"
     elif x == 1:
-        return "Low-End, No Service"
+        return "Low-End, Low Purchase, No Service"
     elif x == 2:
-        return "Mid-End, Low"
+        return "Mid-End, Moderate Purchase, Low Product Usage"
     elif x == 3:
-        return "Mid-End, Moderate"
+        return "Mid-End, Moderate Purchase, Moderate Product Usage"
     else:
         return "Unknown"
 
@@ -107,43 +107,51 @@ def customerjourney():
 def recommendation(x):
     texts = {
         0 : [
-                "1. Engagement Campaigns:",
-                "   - Develop targeted re-engagement campaigns, especially through the Video product and MyApp.",
-                "   - Offer exclusive content, features, or discounts to encourage increased usage.",
-                "2. Personalization:",
-                "   - Leverage data to personalize recommendations and content within the games, music, and video products.",
-                "   - Tailor promotions based on their historical preferences and usage patterns.",
-                "3. Customer Feedback and Improvement:",
-                "   - Proactively seek feedback from Cluster 0 customers to understand their dissatisfaction.",
-                "   - Address and communicate improvements in response to their concerns."
+                """
+                1. Engagement Campaigns:
+                   - Develop targeted re-engagement campaigns, especially through the Video product and MyApp.
+                   - Offer exclusive content, features, or discounts to encourage increased usage.
+                2. Personalization:
+                   - Leverage data to personalize recommendations and content within the games, music, and video products.
+                   - Tailor promotions based on their historical preferences and usage patterns.
+                3. Customer Feedback and Improvement:
+                   - Proactively seek feedback from Cluster 0 customers to understand their dissatisfaction.
+                   - Address and communicate improvements in response to their concerns.
+                """
             ],
         
         1 : [
-                "1. Service Restoration:",
-                "   - Investigate and address the issues causing 'No Service' across all products promptly.",
-                "   - Clearly communicate the steps taken to improve service reliability and quality.",
-                "2. Re-Introduction Campaigns:",
-                "   - Develop targeted campaigns to re-introduce the value of each product."
+            """
+                1. Service Restoration:
+                   - Investigate and address the issues causing 'No Service' across all products promptly.
+                   - Clearly communicate the steps taken to improve service reliability and quality.
+                2. Re-Introduction Campaigns:
+                   - Develop targeted campaigns to re-introduce the value of each product.
+            """
             ],
         
         2 : [
-                "1. Increase Product Engagement:",
-                "   - Launch targeted marketing campaigns to promote key product features.",
-                "   - Provide incentives or rewards for increased product usage.",
-                "2. Personalized Loyalty Programs:",
-                "   - Develop loyalty programs to reward consistent engagement.",
-                "   - Provide personalized recommendations to enhance their experience.",
-                "   - Implement proactive customer support to address any concerns promptly."
+                """
+                1. Increase Product Engagement:
+                   - Launch targeted marketing campaigns to promote key product features.
+                   - Provide incentives or rewards for increased product usage.
+                2. Personalized Loyalty Programs:
+                   - Develop loyalty programs to reward consistent engagement.
+                   - Provide personalized recommendations to enhance their experience.
+                   - Implement proactive customer support to address any concerns promptly.
+                """
             ],
 
         3 : [
-                "1. Increase Product Engagement:",
-                "   - Launch targeted marketing campaigns to promote key product features.",
-                "   - Provide incentives or rewards for increased product usage.",
-                "2. Personalized Loyalty Programs:",
-                "   - Develop loyalty programs to reward consistent engagement.",
-                "   - Provide personalized recommendations to enhance their experience.",
-                "   - Implement proactive customer support to address any concerns promptly."
+                """
+                1. Increase Product Engagement:
+                   - Launch targeted marketing campaigns to promote key product features.
+                   - Provide incentives or rewards for increased product usage.",
+                2. Personalized Loyalty Programs:
+                   - Develop loyalty programs to reward consistent engagement.
+                   - Provide personalized recommendations to enhance their experience.
+                   - Implement proactive customer support to address any concerns promptly.
+                """
             ]
 
     }
